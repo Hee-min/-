@@ -1,0 +1,191 @@
+#include <iostream>
+using namespace std;
+
+void setPotion(int count, int* p_HPPotion, int* p_MPPotion) //포션의 개수 함수
+{
+	*p_HPPotion = count; // HP 포션 개수
+	*p_MPPotion = count; // MP 포션 개수
+}
+
+int main()
+{
+	// 스탯 설정 시스템
+	// (HP , MP, 공격력, 방어력) 크기 4의 int형 배열로 선언 및 0으로 초기화
+	// 배열 이름이 status라면 status[0]은 체력, status[3]은 방어력
+	// HP와 MP를 입력 받음
+	// HP나 MP가 하나라도 50 이하의 숫자를 입력 받을 경우 다시 입력
+	// HP와 MP에 값을 입력 받은 후 공격력과 방어력 입력 받음
+	// 공격력이나 방어력이 하나라도 0 이하의 숫자를 입력 받을 경우 다시 입력 받음
+
+	int status[4]; 
+	status[0] = 0; // HP
+	status[1] = 0; // MP
+	status[2] = 0; // 공격력
+	status[3] = 0; // 방어력
+
+
+
+	cout << " [스탯 설정] " << endl;
+
+	while (status[0] <= 50)
+	{
+		cout << " HP를 입력 하세요 : ";
+		cin >> status[0];
+
+		if (status[0] <= 50)
+		{
+			cout << " HP의 값을 51 이상 입력 해주세요. " << endl;
+		}
+
+	}
+
+	while (status[1] <= 50)
+	{
+		cout << " MP를 입력 하세요 : ";
+		cin >> status[1];
+
+		if (status[1] <= 50)
+		{
+			cout << " MP의 값을 51 이상 입력 해주세요. " << endl;
+		}
+	}
+
+	while (status[2] <= 0)
+	{
+		cout << " 공격력을 입력 하세요 : ";
+		cin >> status[2];
+
+		if (status[2] <= 0)
+		{
+			cout << " 공격력을 1 이상 입력 해주세요. " << endl;
+		}
+	}
+
+	while (status[3] <= 0)
+	{
+		cout << " 방어력을 입력 하세요 : ";
+		cin >> status[3];
+
+		if (status[3] <= 0)
+		{
+			cout << " 방어력력을 1 이상 입력 해주세요. " << endl;
+		}
+	}
+	
+	// 스탯 관리 시스템
+	// 1.HP 회복 2. MP 회복 3. HP 강화 4. MP 강화 5. 공격 스킬 사용 6. 필살기 사용
+	// 선택지 출력 후 , int형 정수 하나 입력 받아 해당 선택지 실행
+	// call by pointer 사용 
+	// HP, MP포션 5개씩 기본 지급
+	// HP, MP 포션 개수로 5를 저장 함수 정의 >> void setPotion(int count, int* p_HPPotion, int* p_MPPotion)  
+	// 1, 2번을 선택시 각각 HP/MP가 20 증가하고 포션의 개수가 1개 차감
+	// 포션이 0개일 경우 사용 할 수 없음
+	// 3, 4번을 선택시 각각 HP/MP가 2배씩 증가
+	// 5번 선택시 MP 50 차감
+	// 6번 선택시 MP 80 차감
+
+	int status2[6];
+	status2[0] = 0; //HP 회복
+	status2[1] = 0; //MP 회복
+	status2[2] = 0; //HP 강화
+	status2[3] = 0; //MP 강화
+	status2[4] = 0; //공격 스킬 사용
+	status2[5] = 0; //필살기 사용
+	
+
+	int *ptr = status2;
+	
+	int p_HPPotion = 0; // HP 포션
+	int p_MPPotion = 0; // MP 포션
+
+	setPotion(5, &p_HPPotion, &p_MPPotion); // HP MP 포션 5개 지급
+
+
+	cout << " [스탯 관리] " << endl;
+	cout << " 1. HP 회복 " << endl;
+	cout << " 2. MP 회복 " << endl;
+	cout << " 3. HP 강화 " << endl;
+	cout << " 4. MP 강화 " << endl;
+	cout << " 5. 공격 스킬 사용 " << endl;
+	cout << " 6. 필살기 사용 " << endl;
+
+	cout << " 번호를 입력 하세요 : ";
+	cin >> *ptr;
+
+	if (*ptr == 1)
+	{
+		cout << " HP가 20 회복되었습니다. 포션이 1개 차감 됩니다. " << endl;
+		cout << " 현재 HP : " << status[0] + 20 << endl;
+		cout << " 남은 포션 수 : " << p_HPPotion - 1 << endl;
+
+		if (p_HPPotion <= 0)
+		{
+			cout << " 포션이 부족합니다. " << endl;
+		}
+	}
+
+	else if(*ptr == 2)
+	{
+		cout << " MP가 20 회복되었습니다. 포션이 1개 차감 됩니다. " << endl;
+		cout << " 현재 MP : " << status[1] + 20 << endl;
+		cout << " 남은 포션 수 : " << p_MPPotion - 1 << endl;
+
+		if (p_MPPotion <= 0)
+		{
+			cout << " 포션이 부족합니다. " << endl;
+		}
+	}
+
+	else if (*ptr == 3)
+	{
+		cout << " HP가 2배로 증가되었습니다. " << endl;
+		cout << " 현재 HP : " << status[0] * 2 << endl;
+	}
+
+	else if (*ptr == 4)
+	{
+		cout << "  MP가 2배로 증가되었습니다. " << endl;
+		cout << " 현재 MP : " << status[1] * 2 << endl;
+	}
+
+	else if (*ptr == 5)
+	{
+		if (status[1] >= 50)
+		{
+			cout << " 공격 스킬을 사용하였습니다. " << endl;
+			cout << " MP가 50 소모되었습니다. " << endl;
+			cout << " 현재 MP : " << status[1] - 50 << endl;
+		}
+
+		else
+		{
+			cout << " MP가 부족하여 공격 스킬 사용이 불가합니다. " << endl;
+			cout << " MP가 50 이상 필요 합니다. " << endl;
+			cout << " 현재 MP : " << status[1] << endl;
+		}
+	}
+
+	else if (*ptr == 6)
+	{
+		if (status[1] >= 80)
+		{
+			cout << " 필살기를 사용하였습니다. " << endl;
+			cout << " MP가 80 소모되었습니다. " << endl;
+			cout << " 현재 MP : " << status[1] - 80 << endl;
+		}
+
+		else
+		{
+			cout << " MP가 부족하여 필살기 사용이 불가합니다. " << endl;
+			cout << " MP가 80 이상 필요 합니다. " << endl;
+			cout << " 현재 MP : " << status[1] << endl;
+		}
+	}
+
+	return 0;
+}
+
+
+
+
+
