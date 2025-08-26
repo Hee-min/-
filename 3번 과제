@@ -1,0 +1,115 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+template <typename T> //템플릿
+class Inventory ///템플릿 클래스
+{
+private: //멤버 변수
+	T* pItems_; //템플릿 포인터 크기 할당
+	int capacity_; // 인벤토리가 최대로 저장할 수 있는 공간의 크기
+	int size_; // 현재 인벤토리에 저장된 아이템의 실제 개수
+
+	//매개변수로 인벤토리의 용량(capacity)을 받으며, 값을 전달하지 않으면 기본값으로 10이 설정
+	//안정성을 위해, 만약 0 이하의 capacity 값이 들어오면 최소 용량을 1로 보정합니다.
+	//new T[capacity_]를 실행하여 아이템을 저장할 메모리 공간을 힙(Heap)에 할당합니다.
+
+public:
+
+	Inventory(int capacity = 10) //생성자
+	{
+		if (0 > capacity) // 0 이하의 capacity 값이 들어오면 
+		{
+			capacity_ = 1; // capacity_ 공간에 1 설정
+		}
+		else  // 0 이하가 아니면
+		{
+			capacity_ = capacity; // capacity_ 공간에 capacity 값 그대로 설정
+		}
+		size_ = 0;
+		pItems_ = new T[capacity_]; // capacity 값을 템플릿 포인터 배열 크기 메모리 공간에 할당
+	}
+
+
+	~Inventory() //소멸자
+	{
+		delete[] pItems_; // delete[] pItems_를 실행하여 생성자에서 할당했던 메모리 해제
+		pItems_ = nullptr; // 안전한 코드를 위해, 메모리 해제 후 포인터를 nullptr로 초기화
+
+	}
+
+	// 멤버 함수 (public)
+	// void AddItem(const T& item) -> 새로운 아이템을 인벤토리에 추가, size_가 capacity_보다 작을 경우에만 아이템 추가하고 size_를 1증가, 인벤토리가 꽉 찼다면 메시지 출력 후 아무 동작 안 함
+	// void RemoveLastItem() -> 인벤토리 마지막에 추가된 아이템 제거, size_ 를 1감소시켜 마지막 아이템에 접근 할 수 없게, 인벤토리가 비어있다면 메세지 출력
+	// int GetSize() const -> 현재 인벤토리에 저장된 아이템의 개수 (size_)반환
+	// int GetCapacity() const -> 인벤토르의 최대 저장 용량 (cpapcity_) 반환
+	// void PrintAllItems() const -> 인벤토리에 모든 아이템 정보 화면에 출력, for 반복문을 이용해 0번 인덱스부터 size_ -1번 인덱스까지 순회하며, 각 아이템 객체의 PrintInfo() 멤버 함수 호출
+	// 인벤토리가 비어 있다면 비어있음 메세지 출력
+	void AddItem(const T& item)
+	{
+		if (size_ < capacity_)
+		{
+			pItems_[size_] = item;
+			size_++;
+		}
+		else
+		{
+			cout << " 인벤토리가 꽉 찼습니다! " << endl;
+		}
+
+	}
+
+	void RemoveLastItem()
+	{
+		if (size_ > 0)
+		{
+			size_--;
+		}
+		else
+		{
+			cout << " 인벤토리가 비어있습니다! " << endl;
+		}
+	}
+
+	int GetSize() const
+	{
+		return size_;
+	}
+
+	int GetCapacity() const
+	{
+		return capacity_;
+	}
+
+	void PrintAllItems() const
+	{
+		if (size_ == 0)
+		{
+			cout << " 인벤토리가 비어있습니다. " << endl;
+		}
+
+		else
+		{
+			for (int i = 0; i < size_; i++)
+			{
+				pItems_[i].PrintInfo();
+			}
+		}
+
+	}
+};
+
+class item
+{ 
+	string name_;
+	int price_;
+
+public:
+	void PrintInfo() const
+	{
+		cout << "[이름: " << name_ << ", 가격: " << price_ << "G]" << endl;
+	}
+
+};
+
